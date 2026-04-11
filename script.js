@@ -140,6 +140,9 @@ function resetForm() {
 }
 
 function compute() {
+  const supplierName = text("supplierName");
+  const supplierLink = text("supplierLink");
+
   const productName = text("productName") || "Produit";
   const supplierName = text("supplierName");
   const supplierLink = text("supplierLink");
@@ -245,6 +248,9 @@ function compute() {
     status,
     badgeText,
     message,
+    supplierName,
+    supplierLink,
+
   };
 
   renderResult(result);
@@ -349,6 +355,8 @@ function renderHistory() {
 
   list.innerHTML = filtered.map((item) => `
     <div class="history-item">
+      <p><strong>Fournisseur :</strong> ${escapeHtml(item.supplierName || "-")}</p>${item.supplierLink ? `
+      <p><strong>Lien :</strong><a href="${escapeHtml(item.supplierLink)}" target="_blank">Voir fournisseur</a></p>` : ""}
       <h3>${escapeHtml(item.productName)}</h3>
       <p><strong>Fournisseur :</strong> ${item.supplierName ? escapeHtml(item.supplierName) : "Non renseigné"}</p>
       <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
