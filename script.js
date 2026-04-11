@@ -71,6 +71,25 @@ function toggleAdvancedPanel() {
   });
 }
 
+
+function updateResultVisibility() {
+  const hasTaxes = $("chkTaxes").checked;
+  const hasPackaging = $("chkPackaging").checked;
+  const hasOtherFees = $("chkOtherFees").checked;
+  const hasLocalDelivery = $("chkLocalDelivery").checked;
+  const hasSellingPrice = $("chkSellingPrice").checked;
+
+  $("rowTaxes").classList.toggle("hidden", !hasTaxes);
+  $("rowPackaging").classList.toggle("hidden", !hasPackaging);
+  $("rowOtherFees").classList.toggle("hidden", !hasOtherFees);
+  $("rowLocalDelivery").classList.toggle("hidden", !hasLocalDelivery);
+
+  $("rowSellingPrice").classList.toggle("hidden", !hasSellingPrice);
+  $("rowProfitTotal").classList.toggle("hidden", !hasSellingPrice);
+  $("rowProfitUnit").classList.toggle("hidden", !hasSellingPrice);
+  $("rowMargin").classList.toggle("hidden", !hasSellingPrice);
+}
+
 function clearResults() {
   [
     "rSupplierFcfa",
@@ -93,6 +112,8 @@ function clearResults() {
   $("statusBadge").textContent = "En attente";
   $("statusBadge").className = "badge neutral";
   $("statusMessage").textContent = "Fais un calcul pour voir le résultat.";
+
+  updateResultVisibility();
 }
 
 function resetForm() {
@@ -227,6 +248,7 @@ function compute() {
 }
 
 function renderResult(r) {
+  updateResultVisibility();
   $("rSupplierFcfa").textContent = money(r.supplierFcfa);
   $("rSupplierDelivery").textContent = money(r.supplierDelivery);
   $("rTransport").textContent = money(r.transportCost);
@@ -379,10 +401,17 @@ toggleAdvancedBtn.addEventListener("click", toggleAdvancedPanel);
 transportMode.addEventListener("change", updateTransportFields);
 
 optionalMap.forEach(({ check }) => {
-  $(check).addEventListener("change", updateOptionalFields);
+  $(check).addEventListener("change", () => {
+    updateOptionalFields();
+    updateResultVisibility();
+  });
 });
 
 updateTransportFields();
 updateOptionalFields();
+updateResultVisibility();
 renderHistory();
 clearResults();
+
+
+
