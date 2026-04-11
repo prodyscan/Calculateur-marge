@@ -413,3 +413,9 @@ updateOptionalFields();
 updateResultVisibility();
 renderHistory();
 clearResults();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(() => console.log("Service Worker OK"))
+    .catch(() => console.log("Service Worker erreur"));
+}
