@@ -22,7 +22,17 @@
 
         <div class="field">
           <label for="currency">Devise fournisseur</label>
-          <input id="currency" type="text" placeholder="FCFA, USD, EUR, CNY..." value="USD" />
+          <select id="currency">
+            <option value="USD">USD - Dollar US</option>
+            <option value="FCFA">FCFA</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - Livre sterling</option>
+            <option value="CNY">CNY - Yuan</option>
+            <option value="GHS">GHS - Cedi</option>
+            <option value="NGN">NGN - Naira</option>
+            <option value="XAF">XAF - FCFA CEMAC</option>
+            <option value="XOF">XOF - FCFA UEMOA</option>
+          </select>
         </div>
 
         <div class="field">
@@ -31,11 +41,16 @@
         </div>
 
         <div class="field">
+          <label for="supplierDelivery">Livraison chez le transitaire</label>
+          <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field hidden-by-advanced" id="quantityField">
           <label for="quantity">Quantité</label>
           <input id="quantity" type="number" min="1" step="1" value="1" />
         </div>
 
-        <div class="field">
+        <div class="field hidden-by-advanced" id="exchangeRateField">
           <label for="exchangeRate">Taux de conversion vers FCFA</label>
           <input id="exchangeRate" type="number" min="0" step="0.01" value="1" />
           <small>Mettre 1 si le montant fournisseur est déjà en FCFA</small>
@@ -85,66 +100,59 @@
           <h2>Champs optionnels</h2>
 
           <div class="checks-grid">
-            <label class="check-card">
-              <input type="checkbox" id="chkSupplierDelivery" />
-              <span>Frais livraison fournisseur → transitaire</span>
-            </label>
-
-            <label class="check-card">
-              <input type="checkbox" id="chkTaxes" />
-              <span>Taxes / douane</span>
-            </label>
-
-            <label class="check-card">
-              <input type="checkbox" id="chkPackaging" />
-              <span>Packaging</span>
-            </label>
-
-            <label class="check-card">
-              <input type="checkbox" id="chkOtherFees" />
-              <span>Autres frais</span>
-            </label>
-
-            <label class="check-card">
-              <input type="checkbox" id="chkLocalDelivery" />
-              <span>Livraison locale finale</span>
-            </label>
-
-            <label class="check-card">
-              <input type="checkbox" id="chkSellingPrice" />
-              <span>Prix de vente envisagé</span>
-            </label>
-          </div>
-
-          <div class="optional-fields">
-            <div class="field hidden" id="supplierDeliveryWrap">
-              <label for="supplierDelivery">Montant livraison fournisseur → transitaire</label>
-              <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
+            <div class="option-box">
+              <label class="check-card">
+                <input type="checkbox" id="chkTaxes" />
+                <span>Taxes / douane</span>
+              </label>
+              <div class="field hidden inline-field" id="taxPercentWrap">
+                <label for="taxPercent">Taxes (%)</label>
+                <input id="taxPercent" type="number" min="0" step="0.01" value="0" />
+              </div>
             </div>
 
-            <div class="field hidden" id="taxPercentWrap">
-              <label for="taxPercent">Taxes (%)</label>
-              <input id="taxPercent" type="number" min="0" step="0.01" value="0" />
+            <div class="option-box">
+              <label class="check-card">
+                <input type="checkbox" id="chkPackaging" />
+                <span>Packaging</span>
+              </label>
+              <div class="field hidden inline-field" id="packagingWrap">
+                <label for="packaging">Packaging</label>
+                <input id="packaging" type="number" min="0" step="0.01" value="0" />
+              </div>
             </div>
 
-            <div class="field hidden" id="packagingWrap">
-              <label for="packaging">Packaging</label>
-              <input id="packaging" type="number" min="0" step="0.01" value="0" />
+            <div class="option-box">
+              <label class="check-card">
+                <input type="checkbox" id="chkOtherFees" />
+                <span>Autres frais</span>
+              </label>
+              <div class="field hidden inline-field" id="otherFeesWrap">
+                <label for="otherFees">Autres frais</label>
+                <input id="otherFees" type="number" min="0" step="0.01" value="0" />
+              </div>
             </div>
 
-            <div class="field hidden" id="otherFeesWrap">
-              <label for="otherFees">Autres frais</label>
-              <input id="otherFees" type="number" min="0" step="0.01" value="0" />
+            <div class="option-box">
+              <label class="check-card">
+                <input type="checkbox" id="chkLocalDelivery" />
+                <span>Livraison locale finale</span>
+              </label>
+              <div class="field hidden inline-field" id="localDeliveryWrap">
+                <label for="localDelivery">Montant livraison locale finale</label>
+                <input id="localDelivery" type="number" min="0" step="0.01" value="0" />
+              </div>
             </div>
 
-            <div class="field hidden" id="localDeliveryWrap">
-              <label for="localDelivery">Montant livraison locale finale</label>
-              <input id="localDelivery" type="number" min="0" step="0.01" value="0" />
-            </div>
-
-            <div class="field hidden" id="sellingPriceWrap">
-              <label for="sellingPrice">Prix de vente envisagé</label>
-              <input id="sellingPrice" type="number" min="0" step="0.01" value="0" />
+            <div class="option-box">
+              <label class="check-card">
+                <input type="checkbox" id="chkSellingPrice" />
+                <span>Prix de vente envisagé</span>
+              </label>
+              <div class="field hidden inline-field" id="sellingPriceWrap">
+                <label for="sellingPrice">Prix de vente envisagé</label>
+                <input id="sellingPrice" type="number" min="0" step="0.01" value="0" />
+              </div>
             </div>
           </div>
         </div>
@@ -167,7 +175,7 @@
 
       <div class="results">
         <div class="result-row"><span>Montant fournisseur converti</span><strong id="rSupplierFcfa">-</strong></div>
-        <div class="result-row"><span>Livraison fournisseur → transitaire</span><strong id="rSupplierDelivery">-</strong></div>
+        <div class="result-row"><span>Livraison chez le transitaire</span><strong id="rSupplierDelivery">-</strong></div>
         <div class="result-row"><span>Transport principal</span><strong id="rTransport">-</strong></div>
         <div class="result-row"><span>Taxes</span><strong id="rTaxes">-</strong></div>
         <div class="result-row"><span>Packaging</span><strong id="rPackaging">-</strong></div>

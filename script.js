@@ -4,6 +4,8 @@ const historyKey = "importcacultorHistory";
 
 const form = $("calcForm");
 const transportMode = $("transportMode");
+const toggleAdvancedBtn = $("toggleAdvancedBtn");
+const advancedPanel = $("advancedPanel");
 
 const pricePerKgWrap = $("pricePerKgWrap");
 const pricePerCbmWrap = $("pricePerCbmWrap");
@@ -11,11 +13,9 @@ const fixedTransportWrap = $("fixedTransportWrap");
 const weightWrap = $("weightWrap");
 const cbmWrap = $("cbmWrap");
 
-const toggleAdvancedBtn = $("toggleAdvancedBtn");
-const advancedPanel = $("advancedPanel");
+const advancedFixedFields = ["quantityField", "exchangeRateField"];
 
 const optionalMap = [
-  { check: "chkSupplierDelivery", wrap: "supplierDeliveryWrap" },
   { check: "chkTaxes", wrap: "taxPercentWrap" },
   { check: "chkPackaging", wrap: "packagingWrap" },
   { check: "chkOtherFees", wrap: "otherFeesWrap" },
@@ -58,26 +58,17 @@ function updateTransportFields() {
 
 function updateOptionalFields() {
   optionalMap.forEach(({ check, wrap }) => {
-    const checked = $(check).checked;
-    $(wrap).classList.toggle("hidden", !checked);
+    $(wrap).classList.toggle("hidden", !$(check).checked);
   });
 }
 
-function resetForm() {
-  form.reset();
+function toggleAdvancedPanel() {
+  advancedPanel.classList.toggle("hidden");
+  const isOpen = !advancedPanel.classList.contains("hidden");
 
-  $("quantity").value = 1;
-  $("exchangeRate").value = 1;
-  $("currency").value = "USD";
-  $("transportMode").value = "kg";
-
-  ["supplierDelivery", "taxPercent", "packaging", "otherFees", "localDelivery", "sellingPrice"].forEach((id) => {
-    if ($(id)) $(id).value = 0;
+  advancedFixedFields.forEach((id) => {
+    $(id).classList.toggle("hidden", !isOpen);
   });
-
-  updateTransportFields();
-  updateOptionalFields();
-  clearResults();
 }
 
 function clearResults() {
@@ -99,27 +90,52 @@ function clearResults() {
     $(id).textContent = "-";
   });
 
-  const badge = $("statusBadge");
-  badge.textContent = "En attente";
-  badge.className = "badge neutral";
+  $("statusBadge").textContent = "En attente";
+  $("statusBadge").className = "badge neutral";
   $("statusMessage").textContent = "Fais un calcul pour voir le résultat.";
+}
+
+function resetForm() {
+  form.reset();
+
+  $("quantity").value = 1;
+  $("exchangeRate").value = 1;
+  $("supplierDelivery").value = 0;
+  $("taxPercent").value = 0;
+  $("packaging").value = 0;
+  $("otherFees").value = 0;
+  $("localDelivery").value = 0;
+  $("sellingPrice").value = 0;
+
+  $("currency").value = "USD";
+  $("transportMode").value = "kg";
+
+  advancedPanel.classList.add("hidden");
+  advancedFixedFields.forEach((id) => $(id).classList.add("hidden"));
+
+  updateTransportFields();
+  updateOptionalFields();
+  clearResults();
 }
 
 function compute() {
   const productName = text("productName") || "Produit";
   const currency = text("currency") || "USD";
   const supplierAmount = num("supplierAmount");
-  const quantity = Math.max(1, num("quantity"));
-  const exchangeRate = Math.max(0, num("exchangeRate")) || 1;
+  const supplierDelivery = num("supplierDelivery");
 
-  const hasSupplierDelivery = $("chkSupplierDelivery").checked;
+  const quantityVisible = !$("quantityField").classList.contains("hidden");
+  const exchangeVisible = !$("exchangeRateField").classList.contains("hidden");
+
+  const quantity = quantityVisible ? Math.max(1, num("quantity")) : 1;
+  const exchangeRate = exchangeVisible ? (Math.max(0, num("exchangeRate")) || 1) : 1;
+
   const hasTaxes = $("chkTaxes").checked;
   const hasPackaging = $("chkPackaging").checked;
   const hasOtherFees = $("chkOtherFees").checked;
   const hasLocalDelivery = $("chkLocalDelivery").checked;
   const hasSellingPrice = $("chkSellingPrice").checked;
 
-  const supplierDelivery = hasSupplierDelivery ? num("supplierDelivery") : 0;
   const taxPercent = hasTaxes ? num("taxPercent") : 0;
   const packaging = hasPackaging ? num("packaging") : 0;
   const otherFees = hasOtherFees ? num("otherFees") : 0;
@@ -185,10 +201,10 @@ function compute() {
     productName,
     currency,
     supplierAmount,
+    supplierDelivery,
     quantity,
     exchangeRate,
     supplierFcfa,
-    supplierDelivery,
     transportMode: transportLabel,
     transportCost,
     taxes,
@@ -198,7 +214,6 @@ function compute() {
     totalCost,
     unitCost,
     sellingPrice,
-    revenueTotal,
     profitTotal,
     profitUnit,
     marginPercent,
@@ -226,10 +241,8 @@ function renderResult(r) {
   $("rProfitUnit").textContent = money(r.profitUnit);
   $("rMargin").textContent = `${r.marginPercent.toFixed(1)}%`;
 
-  const badge = $("statusBadge");
-  badge.textContent = r.badgeText;
-  badge.className = `badge ${r.status}`;
-
+  $("statusBadge").textContent = r.badgeText;
+  $("statusBadge").className = `badge ${r.status}`;
   $("statusMessage").textContent = r.message;
 }
 
@@ -274,9 +287,7 @@ function renderHistory() {
       item.badgeText,
       item.status,
       item.transportMode,
-    ]
-      .join(" ")
-      .toLowerCase();
+    ].join(" ").toLowerCase();
 
     return haystack.includes(search);
   });
@@ -286,21 +297,17 @@ function renderHistory() {
     return;
   }
 
-  list.innerHTML = filtered
-    .map(
-      (item) => `
-      <div class="history-item">
-        <h3>${escapeHtml(item.productName)}</h3>
-        <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
-        <p><strong>Coût total :</strong> ${money(item.totalCost)}</p>
-        <p><strong>Prix de vente :</strong> ${money(item.sellingPrice)}</p>
-        <p><strong>Bénéfice total :</strong> ${money(item.profitTotal)}</p>
-        <p><strong>Marge :</strong> ${item.marginPercent.toFixed(1)}%</p>
-        <p><strong>Statut :</strong> ${escapeHtml(item.badgeText)}</p>
-      </div>
-    `
-    )
-    .join("");
+  list.innerHTML = filtered.map((item) => `
+    <div class="history-item">
+      <h3>${escapeHtml(item.productName)}</h3>
+      <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
+      <p><strong>Coût total :</strong> ${money(item.totalCost)}</p>
+      <p><strong>Prix de vente :</strong> ${money(item.sellingPrice)}</p>
+      <p><strong>Bénéfice total :</strong> ${money(item.profitTotal)}</p>
+      <p><strong>Marge :</strong> ${item.marginPercent.toFixed(1)}%</p>
+      <p><strong>Statut :</strong> ${escapeHtml(item.badgeText)}</p>
+    </div>
+  `).join("");
 }
 
 function exportCSV() {
@@ -315,10 +322,11 @@ function exportCSV() {
     "date",
     "productName",
     "currency",
+    "supplierAmount",
+    "supplierDelivery",
     "quantity",
     "exchangeRate",
     "supplierFcfa",
-    "supplierDelivery",
     "transportMode",
     "transportCost",
     "taxes",
@@ -332,7 +340,7 @@ function exportCSV() {
     "profitUnit",
     "marginPercent",
     "status",
-    "badgeText",
+    "badgeText"
   ];
 
   const rows = history.map((item) =>
@@ -354,9 +362,7 @@ form.addEventListener("submit", (e) => {
   compute();
 });
 
-$("marginBtn").addEventListener("click", () => {
-  compute();
-});
+$("marginBtn").addEventListener("click", compute);
 
 $("saveBtn").addEventListener("click", () => {
   const result = compute();
@@ -369,10 +375,7 @@ $("exportBtn").addEventListener("click", exportCSV);
 $("clearHistoryBtn").addEventListener("click", clearHistory);
 $("historySearch").addEventListener("input", renderHistory);
 
-toggleAdvancedBtn.addEventListener("click", () => {
-  advancedPanel.classList.toggle("hidden");
-});
-
+toggleAdvancedBtn.addEventListener("click", toggleAdvancedPanel);
 transportMode.addEventListener("change", updateTransportFields);
 
 optionalMap.forEach(({ check }) => {
