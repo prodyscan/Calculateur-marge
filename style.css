@@ -1,17 +1,20 @@
 :root {
-  --blue: #1e6df2;
-  --blue-dark: #1457c5;
-  --bg: #f3f4f6;
+  --blue: #f97316;
+  --blue-dark: #ea580c;
+  --bg: #fff7ed;
   --card: #ffffff;
   --text: #111827;
   --muted: #6b7280;
-  --border: #d1d5db;
+  --border: #fdba74;
+
   --success: #15803d;
   --success-bg: #dcfce7;
+
   --danger: #b91c1c;
   --danger-bg: #fee2e2;
-  --neutral: #475569;
-  --neutral-bg: #e2e8f0;
+
+  --neutral: #92400e;
+  --neutral-bg: #ffedd5;
 }
 
 * {
@@ -36,7 +39,8 @@ body {
   background: var(--card);
   border-radius: 22px;
   padding: 22px 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.08);
+  border: 1px solid #fed7aa;
 }
 
 .title-wrap h1 {
@@ -97,6 +101,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
 .hidden {
@@ -104,10 +109,10 @@ select:focus {
 }
 
 .advanced-panel {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #fed7aa;
   border-radius: 18px;
   padding: 16px;
-  background: #fafafa;
+  background: #fffaf5;
 }
 
 .advanced-panel h2 {
@@ -121,7 +126,7 @@ select:focus {
 }
 
 .option-box {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #fed7aa;
   border-radius: 16px;
   padding: 14px;
   background: white;
@@ -154,6 +159,7 @@ select:focus {
   border: none;
   cursor: pointer;
   font-weight: 700;
+  transition: 0.2s;
 }
 
 .btn.primary {
@@ -166,27 +172,27 @@ select:focus {
 }
 
 .btn.dark {
-  background: #0f172a;
+  background: #9a3412;
   color: white;
 }
 
 .btn.ghost {
-  background: #e5e7eb;
-  color: #111827;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .btn.outline {
   background: white;
-  color: #111827;
-  border: 2px dashed #cbd5e1;
+  color: #9a3412;
+  border: 2px dashed #fdba74;
 }
 
 .btn.small {
   min-height: auto;
   padding: 10px 14px;
   border-radius: 12px;
-  background: #e5e7eb;
-  color: #111827;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .result-head {
@@ -233,7 +239,7 @@ select:focus {
   justify-content: space-between;
   gap: 18px;
   padding: 12px 0;
-  border-bottom: 1px solid #eef2f7;
+  border-bottom: 1px solid #ffedd5;
 }
 
 .result-row strong {
@@ -244,8 +250,8 @@ select:focus {
   margin: 18px 0 0;
   padding: 14px 16px;
   border-radius: 16px;
-  background: #f8fafc;
-  color: #0f172a;
+  background: #fffaf5;
+  color: #9a3412;
   font-weight: 700;
 }
 
@@ -259,10 +265,10 @@ select:focus {
 }
 
 .history-item {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #fed7aa;
   border-radius: 16px;
   padding: 14px;
-  background: #fafafa;
+  background: #fffaf5;
 }
 
 .history-item h3 {
@@ -272,7 +278,7 @@ select:focus {
 
 .history-item p {
   margin: 4px 0;
-  color: #334155;
+  color: #7c2d12;
 }
 
 .muted {
