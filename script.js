@@ -62,16 +62,6 @@ function updateOptionalFields() {
   });
 }
 
-function toggleAdvancedPanel() {
-  advancedPanel.classList.toggle("hidden");
-  const isOpen = !advancedPanel.classList.contains("hidden");
-
-  advancedFixedFields.forEach((id) => {
-    $(id).classList.toggle("hidden", !isOpen);
-  });
-}
-
-
 function updateResultVisibility() {
   const hasTaxes = $("chkTaxes").checked;
   const hasPackaging = $("chkPackaging").checked;
@@ -88,6 +78,15 @@ function updateResultVisibility() {
   $("rowProfitTotal").classList.toggle("hidden", !hasSellingPrice);
   $("rowProfitUnit").classList.toggle("hidden", !hasSellingPrice);
   $("rowMargin").classList.toggle("hidden", !hasSellingPrice);
+}
+
+function toggleAdvancedPanel() {
+  advancedPanel.classList.toggle("hidden");
+  const isOpen = !advancedPanel.classList.contains("hidden");
+
+  advancedFixedFields.forEach((id) => {
+    $(id).classList.toggle("hidden", !isOpen);
+  });
 }
 
 function clearResults() {
@@ -136,6 +135,7 @@ function resetForm() {
 
   updateTransportFields();
   updateOptionalFields();
+  updateResultVisibility();
   clearResults();
 }
 
@@ -249,6 +249,7 @@ function compute() {
 
 function renderResult(r) {
   updateResultVisibility();
+
   $("rSupplierFcfa").textContent = money(r.supplierFcfa);
   $("rSupplierDelivery").textContent = money(r.supplierDelivery);
   $("rTransport").textContent = money(r.transportCost);
@@ -412,6 +413,3 @@ updateOptionalFields();
 updateResultVisibility();
 renderHistory();
 clearResults();
-
-
-
