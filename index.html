@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AfriShipPlus - Calculateur de marge</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">AfriShipPlus</div>
+    <button class="menu-btn" type="button">☰ Menu</button>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Calculateur de coût</h1>
+
+      <form id="calcForm" class="form-grid">
+        <div class="field">
+          <label for="productName">Nom du produit</label>
+          <input id="productName" type="text" placeholder="Ex: Montre connectée" />
+        </div>
+
+        <div class="field">
+          <label for="currency">Devise</label>
+          <input id="currency" type="text" placeholder="FCFA, USD, EUR, CNY..." value="FCFA" />
+        </div>
+
+        <div class="field">
+          <label for="supplierAmount">Montant donné par le fournisseur</label>
+          <input id="supplierAmount" type="number" min="0" step="0.01" placeholder="200000" />
+        </div>
+
+        <div class="field">
+          <label for="quantity">Quantité</label>
+          <input id="quantity" type="number" min="1" step="1" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="exchangeRate">Taux de conversion vers FCFA</label>
+          <input id="exchangeRate" type="number" min="0" step="0.01" value="1" />
+          <small>Mettre 1 si tu travailles déjà en FCFA</small>
+        </div>
+
+        <div class="field">
+          <label for="transportMode">Mode de transport</label>
+          <select id="transportMode">
+            <option value="kg">Par kg</option>
+            <option value="cbm">Par CBM</option>
+            <option value="fixed">Montant fixe</option>
+          </select>
+        </div>
+
+        <div class="field transport-field" id="pricePerKgWrap">
+          <label for="pricePerKg">Prix par kg</label>
+          <input id="pricePerKg" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="field transport-field hidden" id="pricePerCbmWrap">
+          <label for="pricePerCbm">Prix par CBM</label>
+          <input id="pricePerCbm" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="field transport-field hidden" id="fixedTransportWrap">
+          <label for="fixedTransport">Montant fixe transport</label>
+          <input id="fixedTransport" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="field" id="weightWrap">
+          <label for="weightTotal">Poids total (kg)</label>
+          <input id="weightTotal" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="field hidden" id="cbmWrap">
+          <label for="volumeCbm">Volume total (CBM)</label>
+          <input id="volumeCbm" type="number" min="0" step="0.001" />
+        </div>
+
+        <div class="field">
+          <label for="taxPercent">Taxes (%)</label>
+          <input id="taxPercent" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="packaging">Packaging</label>
+          <input id="packaging" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="otherFees">Autres frais</label>
+          <input id="otherFees" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field checkbox-field">
+          <label class="checkline">
+            <input id="includeLocalDelivery" type="checkbox" />
+            <span>Inclure livraison locale</span>
+          </label>
+        </div>
+
+        <div class="field hidden" id="localDeliveryWrap">
+          <label for="localDelivery">Montant livraison locale</label>
+          <input id="localDelivery" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="sellingPrice">Prix de vente envisagé</label>
+          <input id="sellingPrice" type="number" min="0" step="0.01" />
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Calculer</button>
+          <button type="button" id="marginBtn" class="btn secondary">Marge</button>
+          <button type="button" id="saveBtn" class="btn ghost">Enregistrer</button>
+          <button type="button" id="exportBtn" class="btn ghost">Exporter CSV</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="result-head">
+        <h2>Résultats</h2>
+        <span id="statusBadge" class="badge neutral">En attente</span>
+      </div>
+
+      <div class="results">
+        <div class="result-row"><span>Coût fournisseur converti</span><strong id="rSupplierFcfa">-</strong></div>
+        <div class="result-row"><span>Transport</span><strong id="rTransport">-</strong></div>
+        <div class="result-row"><span>Taxes</span><strong id="rTaxes">-</strong></div>
+        <div class="result-row"><span>Livraison locale</span><strong id="rLocalDelivery">-</strong></div>
+        <div class="result-row"><span>Coût total importation</span><strong id="rTotalCost">-</strong></div>
+        <div class="result-row"><span>Coût unitaire</span><strong id="rUnitCost">-</strong></div>
+        <div class="result-row"><span>Prix de vente</span><strong id="rSellingPrice">-</strong></div>
+        <div class="result-row"><span>Bénéfice total</span><strong id="rProfitTotal">-</strong></div>
+        <div class="result-row"><span>Bénéfice unitaire</span><strong id="rProfitUnit">-</strong></div>
+        <div class="result-row"><span>Marge</span><strong id="rMargin">-</strong></div>
+      </div>
+
+      <p id="statusMessage" class="status-message">
+        Clique sur calculer pour voir si tu es en gain ou en perte.
+      </p>
+    </section>
+
+    <section class="card">
+      <div class="result-head">
+        <h2>Historique</h2>
+        <button type="button" id="clearHistoryBtn" class="btn small">Vider</button>
+      </div>
+      <div id="historyList" class="history-list">
+        <p class="muted">Aucun calcul enregistré.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
