@@ -4,20 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>importcacultor</title>
+
   <link rel="stylesheet" href="style.css?v=3" />
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#f97316">
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#f97316" />
 
-
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6BTB24DJQF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6BTB24DJQF');
+  </script>
 </head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-6BTB24DJQF"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-6BTB24DJQF');
-</script>
-
 
 <body>
   <main class="container">
@@ -56,6 +55,16 @@ gtag('config', 'G-6BTB24DJQF');
         <div class="field">
           <label for="supplierDelivery">Livraison chez le transitaire</label>
           <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="supplierName">Nom du fournisseur (optionnel)</label>
+          <input id="supplierName" type="text" placeholder="Ex: Alibaba Store" />
+        </div>
+
+        <div class="field">
+          <label for="supplierLink">Lien du fournisseur (optionnel)</label>
+          <input id="supplierLink" type="url" placeholder="https://..." />
         </div>
 
         <div class="field hidden-by-advanced" id="quantityField">

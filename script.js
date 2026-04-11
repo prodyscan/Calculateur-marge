@@ -141,6 +141,8 @@ function resetForm() {
 
 function compute() {
   const productName = text("productName") || "Produit";
+  const supplierName = text("supplierName");
+  const supplierLink = text("supplierLink");
   const currency = text("currency") || "USD";
   const supplierAmount = num("supplierAmount");
   const supplierDelivery = num("supplierDelivery");
@@ -220,6 +222,8 @@ function compute() {
   const result = {
     date: new Date().toLocaleString(),
     productName,
+    supplierName,
+    supplierLink,
     currency,
     supplierAmount,
     supplierDelivery,
@@ -298,6 +302,27 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function copyLink(link) {
+  if (!link) return;
+  navigator.clipboard.writeText(link)
+    .then(() => alert("Lien copié !"))
+    .catch(() => alert("Impossible de copier le lien."));
+}
+
+function shareLink(link) {
+  if (!link) return;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "Lien fournisseur",
+      text: "Voici le lien du fournisseur :",
+      url: link
+    }).catch(() => {});
+  } else {
+    alert("Partage non supporté sur cet appareil");
+  }
+}
+
 function renderHistory() {
   const history = getHistory();
   const search = text("historySearch").toLowerCase();
@@ -306,6 +331,8 @@ function renderHistory() {
   const filtered = history.filter((item) => {
     const haystack = [
       item.productName,
+      item.supplierName,
+      item.supplierLink,
       item.date,
       item.badgeText,
       item.status,
@@ -323,12 +350,24 @@ function renderHistory() {
   list.innerHTML = filtered.map((item) => `
     <div class="history-item">
       <h3>${escapeHtml(item.productName)}</h3>
+      <p><strong>Fournisseur :</strong> ${item.supplierName ? escapeHtml(item.supplierName) : "Non renseigné"}</p>
       <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
       <p><strong>Coût total :</strong> ${money(item.totalCost)}</p>
       <p><strong>Prix de vente :</strong> ${money(item.sellingPrice)}</p>
       <p><strong>Bénéfice total :</strong> ${money(item.profitTotal)}</p>
       <p><strong>Marge :</strong> ${item.marginPercent.toFixed(1)}%</p>
       <p><strong>Statut :</strong> ${escapeHtml(item.badgeText)}</p>
+      <p><strong>Lien fournisseur :</strong> ${
+        item.supplierLink
+          ? `
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+              <button onclick="window.open('${escapeHtml(item.supplierLink)}', '_blank')" class="btn small">🔗 Ouvrir</button>
+              <button onclick="copyLink('${escapeHtml(item.supplierLink)}')" class="btn small">📋 Copier</button>
+              <button onclick="shareLink('${escapeHtml(item.supplierLink)}')" class="btn small">📤 Partager</button>
+            </div>
+          `
+          : "Aucun"
+      }</p>
     </div>
   `).join("");
 }
@@ -344,6 +383,8 @@ function exportCSV() {
   const headers = [
     "date",
     "productName",
+    "supplierName",
+    "supplierLink",
     "currency",
     "supplierAmount",
     "supplierDelivery",

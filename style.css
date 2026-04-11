@@ -104,7 +104,8 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
 }
 
-.hidden {
+.hidden,
+.hidden-by-advanced {
   display: none;
 }
 
@@ -160,6 +161,10 @@ select:focus {
   cursor: pointer;
   font-weight: 700;
   transition: 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
 }
 
 .btn.primary {
@@ -279,6 +284,29 @@ select:focus {
 .history-item p {
   margin: 4px 0;
   color: #7c2d12;
+}
+
+.history-item a {
+  color: #c2410c;
+  text-decoration: none;
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.history-item a:hover {
+  text-decoration: underline;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.history-actions .btn.small {
+  border: 1px solid #fdba74;
+  background: white;
 }
 
 .muted {
