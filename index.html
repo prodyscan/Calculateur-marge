@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AfriShipPlus - Calculateur de marge</title>
+  <title>importcacultor</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">AfriShipPlus</div>
-    <button class="menu-btn" type="button">☰ Menu</button>
-  </header>
-
   <main class="container">
     <section class="card">
-      <h1>Calculateur de coût</h1>
+      <div class="title-wrap">
+        <h1>importcacultor</h1>
+        <p class="subtitle">Calculateur intelligent de coût, marge, gain et perte pour importation.</p>
+      </div>
 
       <form id="calcForm" class="form-grid">
         <div class="field">
@@ -23,8 +21,8 @@
         </div>
 
         <div class="field">
-          <label for="currency">Devise</label>
-          <input id="currency" type="text" placeholder="FCFA, USD, EUR, CNY..." value="FCFA" />
+          <label for="currency">Devise fournisseur</label>
+          <input id="currency" type="text" placeholder="FCFA, USD, EUR, CNY..." value="USD" />
         </div>
 
         <div class="field">
@@ -40,11 +38,11 @@
         <div class="field">
           <label for="exchangeRate">Taux de conversion vers FCFA</label>
           <input id="exchangeRate" type="number" min="0" step="0.01" value="1" />
-          <small>Mettre 1 si tu travailles déjà en FCFA</small>
+          <small>Mettre 1 si le montant fournisseur est déjà en FCFA</small>
         </div>
 
         <div class="field">
-          <label for="transportMode">Mode de transport</label>
+          <label for="transportMode">Mode de transport principal</label>
           <select id="transportMode">
             <option value="kg">Par kg</option>
             <option value="cbm">Par CBM</option>
@@ -77,42 +75,85 @@
           <input id="volumeCbm" type="number" min="0" step="0.001" />
         </div>
 
-        <div class="field">
-          <label for="taxPercent">Taxes (%)</label>
-          <input id="taxPercent" type="number" min="0" step="0.01" value="0" />
+        <div class="field full-width">
+          <button type="button" id="toggleAdvancedBtn" class="btn outline">
+            Options avancées
+          </button>
         </div>
 
-        <div class="field">
-          <label for="packaging">Packaging</label>
-          <input id="packaging" type="number" min="0" step="0.01" value="0" />
+        <div id="advancedPanel" class="advanced-panel hidden full-width">
+          <h2>Champs optionnels</h2>
+
+          <div class="checks-grid">
+            <label class="check-card">
+              <input type="checkbox" id="chkSupplierDelivery" />
+              <span>Frais livraison fournisseur → transitaire</span>
+            </label>
+
+            <label class="check-card">
+              <input type="checkbox" id="chkTaxes" />
+              <span>Taxes / douane</span>
+            </label>
+
+            <label class="check-card">
+              <input type="checkbox" id="chkPackaging" />
+              <span>Packaging</span>
+            </label>
+
+            <label class="check-card">
+              <input type="checkbox" id="chkOtherFees" />
+              <span>Autres frais</span>
+            </label>
+
+            <label class="check-card">
+              <input type="checkbox" id="chkLocalDelivery" />
+              <span>Livraison locale finale</span>
+            </label>
+
+            <label class="check-card">
+              <input type="checkbox" id="chkSellingPrice" />
+              <span>Prix de vente envisagé</span>
+            </label>
+          </div>
+
+          <div class="optional-fields">
+            <div class="field hidden" id="supplierDeliveryWrap">
+              <label for="supplierDelivery">Montant livraison fournisseur → transitaire</label>
+              <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field hidden" id="taxPercentWrap">
+              <label for="taxPercent">Taxes (%)</label>
+              <input id="taxPercent" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field hidden" id="packagingWrap">
+              <label for="packaging">Packaging</label>
+              <input id="packaging" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field hidden" id="otherFeesWrap">
+              <label for="otherFees">Autres frais</label>
+              <input id="otherFees" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field hidden" id="localDeliveryWrap">
+              <label for="localDelivery">Montant livraison locale finale</label>
+              <input id="localDelivery" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field hidden" id="sellingPriceWrap">
+              <label for="sellingPrice">Prix de vente envisagé</label>
+              <input id="sellingPrice" type="number" min="0" step="0.01" value="0" />
+            </div>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="otherFees">Autres frais</label>
-          <input id="otherFees" type="number" min="0" step="0.01" value="0" />
-        </div>
-
-        <div class="field checkbox-field">
-          <label class="checkline">
-            <input id="includeLocalDelivery" type="checkbox" />
-            <span>Inclure livraison locale</span>
-          </label>
-        </div>
-
-        <div class="field hidden" id="localDeliveryWrap">
-          <label for="localDelivery">Montant livraison locale</label>
-          <input id="localDelivery" type="number" min="0" step="0.01" value="0" />
-        </div>
-
-        <div class="field">
-          <label for="sellingPrice">Prix de vente envisagé</label>
-          <input id="sellingPrice" type="number" min="0" step="0.01" />
-        </div>
-
-        <div class="actions">
+        <div class="actions full-width">
           <button type="submit" class="btn primary">Calculer</button>
-          <button type="button" id="marginBtn" class="btn secondary">Marge</button>
+          <button type="button" id="marginBtn" class="btn dark">Marge</button>
           <button type="button" id="saveBtn" class="btn ghost">Enregistrer</button>
+          <button type="button" id="resetBtn" class="btn ghost">RAZ</button>
           <button type="button" id="exportBtn" class="btn ghost">Exporter CSV</button>
         </div>
       </form>
@@ -125,10 +166,13 @@
       </div>
 
       <div class="results">
-        <div class="result-row"><span>Coût fournisseur converti</span><strong id="rSupplierFcfa">-</strong></div>
-        <div class="result-row"><span>Transport</span><strong id="rTransport">-</strong></div>
+        <div class="result-row"><span>Montant fournisseur converti</span><strong id="rSupplierFcfa">-</strong></div>
+        <div class="result-row"><span>Livraison fournisseur → transitaire</span><strong id="rSupplierDelivery">-</strong></div>
+        <div class="result-row"><span>Transport principal</span><strong id="rTransport">-</strong></div>
         <div class="result-row"><span>Taxes</span><strong id="rTaxes">-</strong></div>
-        <div class="result-row"><span>Livraison locale</span><strong id="rLocalDelivery">-</strong></div>
+        <div class="result-row"><span>Packaging</span><strong id="rPackaging">-</strong></div>
+        <div class="result-row"><span>Autres frais</span><strong id="rOtherFees">-</strong></div>
+        <div class="result-row"><span>Livraison locale finale</span><strong id="rLocalDelivery">-</strong></div>
         <div class="result-row"><span>Coût total importation</span><strong id="rTotalCost">-</strong></div>
         <div class="result-row"><span>Coût unitaire</span><strong id="rUnitCost">-</strong></div>
         <div class="result-row"><span>Prix de vente</span><strong id="rSellingPrice">-</strong></div>
@@ -138,15 +182,21 @@
       </div>
 
       <p id="statusMessage" class="status-message">
-        Clique sur calculer pour voir si tu es en gain ou en perte.
+        Fais un calcul pour voir le résultat.
       </p>
     </section>
 
     <section class="card">
-      <div class="result-head">
+      <div class="result-head history-head">
         <h2>Historique</h2>
         <button type="button" id="clearHistoryBtn" class="btn small">Vider</button>
       </div>
+
+      <div class="field history-search">
+        <label for="historySearch">Recherche dans l’historique</label>
+        <input id="historySearch" type="text" placeholder="Nom produit, statut, date..." />
+      </div>
+
       <div id="historyList" class="history-list">
         <p class="muted">Aucun calcul enregistré.</p>
       </div>

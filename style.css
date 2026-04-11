@@ -1,7 +1,7 @@
 :root {
-  --blue: #1565f7;
-  --blue-dark: #0d4ec7;
-  --bg: #f2f4f8;
+  --blue: #1e6df2;
+  --blue-dark: #1457c5;
+  --bg: #f3f4f6;
   --card: #ffffff;
   --text: #111827;
   --muted: #6b7280;
@@ -25,31 +25,8 @@ body {
   color: var(--text);
 }
 
-.topbar {
-  background: var(--blue);
-  color: white;
-  padding: 22px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.brand {
-  font-size: 28px;
-  font-weight: 800;
-}
-
-.menu-btn {
-  border: none;
-  background: #e5e7eb;
-  color: #1e40af;
-  padding: 14px 18px;
-  border-radius: 14px;
-  font-size: 18px;
-}
-
 .container {
-  width: min(920px, calc(100% - 24px));
+  width: min(980px, calc(100% - 24px));
   margin: 18px auto 40px;
   display: grid;
   gap: 18px;
@@ -62,22 +39,28 @@ body {
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
-h1, h2 {
-  margin-top: 0;
+.title-wrap h1 {
+  margin: 0 0 6px;
+  font-size: 30px;
 }
 
-h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
+.subtitle {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 15px;
 }
 
 h2 {
-  font-size: 22px;
+  margin-top: 0;
 }
 
 .form-grid {
   display: grid;
   gap: 16px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
 }
 
 .field {
@@ -116,27 +99,48 @@ select:focus {
   border-color: var(--blue);
 }
 
-.checkbox-field {
-  padding-top: 8px;
+.advanced-panel {
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 16px;
+  background: #fafafa;
 }
 
-.checkline {
+.advanced-panel h2 {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.checks-grid {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.check-card {
   display: flex;
   align-items: center;
   gap: 10px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px 14px;
   font-weight: 700;
 }
 
-.checkline input {
+.check-card input {
   width: 20px;
   min-height: 20px;
 }
 
+.optional-fields {
+  display: grid;
+  gap: 14px;
+}
+
 .actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 6px;
 }
 
 .btn {
@@ -144,35 +148,40 @@ select:focus {
   border-radius: 16px;
   border: none;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .btn.primary {
   background: var(--blue);
   color: white;
-  font-weight: 700;
 }
 
 .btn.primary:hover {
   background: var(--blue-dark);
 }
 
-.btn.secondary {
-  background: #111827;
+.btn.dark {
+  background: #0f172a;
   color: white;
-  font-weight: 700;
 }
 
-.btn.ghost,
-.btn.small {
+.btn.ghost {
   background: #e5e7eb;
   color: #111827;
-  font-weight: 700;
+}
+
+.btn.outline {
+  background: white;
+  color: #111827;
+  border: 2px dashed #cbd5e1;
 }
 
 .btn.small {
   min-height: auto;
   padding: 10px 14px;
   border-radius: 12px;
+  background: #e5e7eb;
+  color: #111827;
 }
 
 .result-head {
@@ -235,6 +244,10 @@ select:focus {
   font-weight: 700;
 }
 
+.history-search {
+  margin-bottom: 14px;
+}
+
 .history-list {
   display: grid;
   gap: 12px;
@@ -271,12 +284,14 @@ select:focus {
   }
 
   .actions {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 
-  .field.checkbox-field,
-  .field.hidden + .field {
-    align-self: end;
+  .checks-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .optional-fields {
+    grid-template-columns: 1fr 1fr;
   }
 }
