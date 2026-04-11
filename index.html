@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>importcacultor</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
   <main class="container">
@@ -174,22 +174,70 @@
       </div>
 
       <div class="results">
-        <div class="result-row" id="rowSupplierFcfa"><span>Montant fournisseur converti</span><strong id="rSupplierFcfa">-</strong></div>
-        <div class="result-row" id="rowSupplierDelivery"><span>Livraison chez le transitaire</span><strong id="rSupplierDelivery">-</strong></div>
-        <div class="result-row" id="rowTransport"><span>Transport principal</span><strong id="rTransport">-</strong></div>
+        <div class="result-row" id="rowSupplierFcfa">
+          <span>Montant fournisseur converti</span>
+          <strong id="rSupplierFcfa">-</strong>
+        </div>
 
-        <div class="result-row hidden" id="rowTaxes"><span>Taxes</span><strong id="rTaxes">-</strong></div>
-        <div class="result-row hidden" id="rowPackaging"><span>Packaging</span><strong id="rPackaging">-</strong></div>
-        <div class="result-row hidden" id="rowOtherFees"><span>Autres frais</span><strong id="rOtherFees">-</strong></div>
-        <div class="result-row hidden" id="rowLocalDelivery"><span>Livraison locale finale</span><strong id="rLocalDelivery">-</strong></div>
+        <div class="result-row" id="rowSupplierDelivery">
+          <span>Livraison chez le transitaire</span>
+          <strong id="rSupplierDelivery">-</strong>
+        </div>
 
-        <div class="result-row" id="rowTotalCost"><span>Coût total importation</span><strong id="rTotalCost">-</strong></div>
-        <div class="result-row" id="rowUnitCost"><span>Coût unitaire</span><strong id="rUnitCost">-</strong></div>
+        <div class="result-row" id="rowTransport">
+          <span>Transport principal</span>
+          <strong id="rTransport">-</strong>
+        </div>
 
-        <div class="result-row hidden" id="rowSellingPrice"><span>Prix de vente</span><strong id="rSellingPrice">-</strong></div>
-        <div class="result-row hidden" id="rowProfitTotal"><span>Bénéfice total</span><strong id="rProfitTotal">-</strong></div>
-        <div class="result-row hidden" id="rowProfitUnit"><span>Bénéfice unitaire</span><strong id="rProfitUnit">-</strong></div>
-        <div class="result-row hidden" id="rowMargin"><span>Marge</span><strong id="rMargin">-</strong></div>
+        <div class="result-row hidden" id="rowTaxes" style="display:none;">
+          <span>Taxes</span>
+          <strong id="rTaxes">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowPackaging" style="display:none;">
+          <span>Packaging</span>
+          <strong id="rPackaging">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowOtherFees" style="display:none;">
+          <span>Autres frais</span>
+          <strong id="rOtherFees">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowLocalDelivery" style="display:none;">
+          <span>Livraison locale finale</span>
+          <strong id="rLocalDelivery">-</strong>
+        </div>
+
+        <div class="result-row" id="rowTotalCost">
+          <span>Coût total importation</span>
+          <strong id="rTotalCost">-</strong>
+        </div>
+
+        <div class="result-row" id="rowUnitCost">
+          <span>Coût unitaire</span>
+          <strong id="rUnitCost">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowSellingPrice" style="display:none;">
+          <span>Prix de vente</span>
+          <strong id="rSellingPrice">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowProfitTotal" style="display:none;">
+          <span>Bénéfice total</span>
+          <strong id="rProfitTotal">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowProfitUnit" style="display:none;">
+          <span>Bénéfice unitaire</span>
+          <strong id="rProfitUnit">-</strong>
+        </div>
+
+        <div class="result-row hidden" id="rowMargin" style="display:none;">
+          <span>Marge</span>
+          <strong id="rMargin">-</strong>
+        </div>
       </div>
 
       <p id="statusMessage" class="status-message">
@@ -214,6 +262,6 @@
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
