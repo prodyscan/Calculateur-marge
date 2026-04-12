@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>importcacultor</title>
 
-  <link rel="stylesheet" href="style.css?v=3" />
+  <link rel="stylesheet" href="style.css?v=4" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#f97316" />
 
@@ -17,7 +17,6 @@
     gtag('config', 'G-6BTB24DJQF');
   </script>
 </head>
-
 <body>
   <main class="container">
     <section class="card">
@@ -27,18 +26,20 @@
       </div>
 
       <form id="calcForm" class="form-grid">
+        <div class="field">
+          <label for="productName">Nom du produit (optionnel)</label>
+          <input id="productName" type="text" placeholder="Ex: Montre connectée" />
+        </div>
 
         <div class="field">
           <label for="supplierName">Nom du fournisseur (optionnel)</label>
-          <input id="supplierName" type="text" placeholder="Ex: Alibaba, John Trading..." />
+          <input id="supplierName" type="text" placeholder="Ex: Alibaba Store" />
         </div>
 
-        <div class="field">
+        <div class="field full-width">
           <label for="supplierLink">Lien du fournisseur (optionnel)</label>
-          <input id="supplierLink" type="url" placeholder="https://..." />
+          <input id="supplierLink" type="text" placeholder="Collez un lien ou un texte contenant un lien" />
         </div>
-
-
 
         <div class="field">
           <label for="currency">Devise fournisseur</label>
@@ -63,16 +64,6 @@
         <div class="field">
           <label for="supplierDelivery">Livraison chez le transitaire</label>
           <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
-        </div>
-
-        <div class="field">
-          <label for="supplierName">Nom du fournisseur (optionnel)</label>
-          <input id="supplierName" type="text" placeholder="Ex: Alibaba Store" />
-        </div>
-
-        <div class="field">
-          <label for="supplierLink">Lien du fournisseur (optionnel)</label>
-          <input id="supplierLink" type="url" placeholder="https://..." />
         </div>
 
         <div class="field hidden-by-advanced" id="quantityField">
@@ -283,7 +274,7 @@
 
       <div class="field history-search">
         <label for="historySearch">Recherche dans l’historique</label>
-        <input id="historySearch" type="text" placeholder="Nom produit, statut, date..." />
+        <input id="historySearch" type="text" placeholder="Nom produit, fournisseur, date..." />
       </div>
 
       <div id="historyList" class="history-list">
@@ -292,6 +283,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

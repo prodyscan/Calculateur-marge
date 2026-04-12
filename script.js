@@ -36,6 +36,14 @@ function money(value) {
   return new Intl.NumberFormat("fr-FR").format(n) + " FCFA";
 }
 
+function extractUrl(rawText) {
+  const value = String(rawText || "").trim();
+  if (!value) return "";
+
+  const match = value.match(/https?:\/\/[^\s<>"'`]+/i);
+  return match ? match[0] : "";
+}
+
 function updateTransportFields() {
   const mode = transportMode.value;
 
@@ -140,12 +148,11 @@ function resetForm() {
 }
 
 function compute() {
+  const productName = text("productName");
   const supplierName = text("supplierName");
-  const supplierLink = text("supplierLink");
+  const supplierLinkRaw = text("supplierLink");
+  const supplierLink = extractUrl(supplierLinkRaw);
 
-  const productName = text("productName") || "Produit";
-  const supplierName = text("supplierName");
-  const supplierLink = text("supplierLink");
   const currency = text("currency") || "USD";
   const supplierAmount = num("supplierAmount");
   const supplierDelivery = num("supplierDelivery");
@@ -248,9 +255,6 @@ function compute() {
     status,
     badgeText,
     message,
-    supplierName,
-    supplierLink,
-
   };
 
   renderResult(result);
@@ -308,6 +312,15 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function escapeAttr(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
 function copyLink(link) {
   if (!link) return;
   navigator.clipboard.writeText(link)
@@ -355,27 +368,26 @@ function renderHistory() {
 
   list.innerHTML = filtered.map((item) => `
     <div class="history-item">
-      <p><strong>Fournisseur :</strong> ${escapeHtml(item.supplierName || "-")}</p>${item.supplierLink ? `
-      <p><strong>Lien :</strong><a href="${escapeHtml(item.supplierLink)}" target="_blank">Voir fournisseur</a></p>` : ""}
-      <h3>${escapeHtml(item.productName)}</h3>
-      <p><strong>Fournisseur :</strong> ${item.supplierName ? escapeHtml(item.supplierName) : "Non renseigné"}</p>
+      <h3>${escapeHtml(item.productName || "Produit sans nom")}</h3>
+      <p><strong>Nom du fournisseur :</strong> ${item.supplierName ? escapeHtml(item.supplierName) : "Non renseigné"}</p>
       <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
       <p><strong>Coût total :</strong> ${money(item.totalCost)}</p>
       <p><strong>Prix de vente :</strong> ${money(item.sellingPrice)}</p>
       <p><strong>Bénéfice total :</strong> ${money(item.profitTotal)}</p>
       <p><strong>Marge :</strong> ${item.marginPercent.toFixed(1)}%</p>
       <p><strong>Statut :</strong> ${escapeHtml(item.badgeText)}</p>
-      <p><strong>Lien fournisseur :</strong> ${
+      <p><strong>Lien du fournisseur :</strong> ${item.supplierLink ? escapeHtml(item.supplierLink) : "Aucun"}</p>
+      ${
         item.supplierLink
           ? `
-            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
-              <button onclick="window.open('${escapeHtml(item.supplierLink)}', '_blank')" class="btn small">🔗 Ouvrir</button>
-              <button onclick="copyLink('${escapeHtml(item.supplierLink)}')" class="btn small">📋 Copier</button>
-              <button onclick="shareLink('${escapeHtml(item.supplierLink)}')" class="btn small">📤 Partager</button>
+            <div class="history-actions">
+              <button onclick="window.open('${escapeAttr(item.supplierLink)}', '_blank')" class="btn small">🔗 Ouvrir</button>
+              <button onclick="copyLink('${escapeAttr(item.supplierLink)}')" class="btn small">📋 Copier</button>
+              <button onclick="shareLink('${escapeAttr(item.supplierLink)}')" class="btn small">📤 Partager</button>
             </div>
           `
-          : "Aucun"
-      }</p>
+          : ""
+      }
     </div>
   `).join("");
 }
