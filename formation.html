@@ -192,6 +192,11 @@
     <button class="btn" onclick="validateCode()">
       Activer mon accès
     </button>
+   
+    <button class="btn" onclick="sendWhatsApp()">
+      📩 Envoyer mon ID sur WhatsApp
+    </button>
+
 
     <div id="msg"></div>
   </div>
@@ -250,6 +255,25 @@
           "<div class='info'>✅ Accès déjà actif — " + daysLeft + " jour(s) restant(s)</div>";
       }
     })();
+  </script>
+<!-- Commentaire -->
+  <script>
+    function sendWhatsApp() {
+      const id = document.getElementById("accessCode").value.trim();
+
+      if (!id) {
+        alert("Entre ton ID de transaction");
+        return;
+      }
+
+      const message =
+        "Bonjour, j’ai payé la formation.%0AID : " + id;
+
+      window.open(
+        "https://wa.me/2250706273262?text=" + message,
+        "_blank"
+      );
+    }
   </script>
 
 </body>
