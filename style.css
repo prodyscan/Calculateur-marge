@@ -325,4 +325,10 @@ select:focus {
   .checks-grid {
     grid-template-columns: 1fr 1fr;
   }
+
+.top-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
 }

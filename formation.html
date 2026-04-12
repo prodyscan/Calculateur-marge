@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formation AliScan</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: #1e293b;
+    }
+
+    header button {
+      margin-right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+
+    iframe {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .modules {
+      padding: 10px;
+    }
+
+    .module {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: none;
+      background: #1e293b;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .locked {
+      background: #444;
+      opacity: 0.6;
+    }
+
+    .payment-box {
+      padding: 15px;
+      background: #111827;
+      margin: 10px;
+      border-radius: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      background: orange;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .ok {
+      color: #22c55e;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <button onclick="history.back()">←</button>
+  <h3>Formation AliScan</h3>
+</header>
+
+<!-- PLAYER -->
+<div class="video-container">
+  <iframe id="player"
+    src="https://www.youtube.com/embed/VIDEO_ID_PREVIEW"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<!-- MODULES -->
+<div class="modules">
+
+  <button class="module" onclick="play('VIDEO_ID_PREVIEW')">
+    🎁 Preview gratuit
+  </button>
+
+  <button class="module locked" onclick="checkAccess('VIDEO_ID_1')">
+    🔒 Module 1
+  </button>
+
+  <button class="module locked" onclick="checkAccess('VIDEO_ID_2')">
+    🔒 Module 2
+  </button>
+
+  <button class="module locked" onclick="checkAccess('VIDEO_ID_3')">
+    🔒 Module 3
+  </button>
+
+  <button class="module locked" onclick="checkAccess('VIDEO_ID_4')">
+    🔒 Module 4
+  </button>
+
+</div>
+
+<!-- PAIEMENT -->
+<div class="payment-box">
+
+  <p>💳 Paiement: <b>2000 FCFA</b></p>
+  <p>📱 Wave / Orange:</p>
+
+  <p><b>+2250706273262</b></p>
+
+  <input type="text" id="waveId" placeholder="Entre ton ID transaction">
+
+  <button class="btn" onclick="validate()">Valider paiement</button>
+
+  <div id="msg"></div>
+
+</div>
+
+<script>
+  let unlocked = localStorage.getItem("paid");
+
+  function play(id){
+    document.getElementById("player").src =
+      "https://www.youtube.com/embed/" + id + "?autoplay=1";
+  }
+
+  function checkAccess(id){
+    if(localStorage.getItem("paid")){
+      play(id);
+    } else {
+      alert("🔒 Paye d'abord pour accéder à la formation");
+    }
+  }
+
+  function validate(){
+    let id = document.getElementById("waveId").value;
+
+    if(id.length < 6){
+      alert("ID invalide");
+      return;
+    }
+
+    // TOI tu vérifies manuellement après
+    localStorage.setItem("paid", "yes");
+
+    document.getElementById("msg").innerHTML =
+      "<div class='ok'>✅ Accès débloqué</div>";
+  }
+</script>
+
+</body>
+</html>
