@@ -1,123 +1,256 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formation AliScan</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formation AliScan</title>
 
-<style>
-body{font-family:Arial;background:#0f172a;color:white;margin:0}
-header{display:flex;align-items:center;padding:10px;background:#1e293b}
-header button{margin-right:10px;background:none;border:none;color:white;font-size:20px}
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+    }
 
-.video-container{position:relative;padding-bottom:56.25%;height:0}
-iframe{position:absolute;width:100%;height:100%}
+    header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: #1e293b;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-.modules{padding:10px}
-.module{display:block;width:100%;padding:10px;margin:5px 0;border:none;background:#1e293b;color:white;border-radius:8px}
-.locked{background:#444;opacity:0.6}
+    header button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
 
-.payment{padding:15px;background:#111827;margin:10px;border-radius:10px}
-input{width:100%;padding:10px;margin-top:10px;border-radius:5px;border:none}
-.btn{width:100%;margin-top:10px;padding:10px;background:orange;border:none;border-radius:5px}
-.ok{color:#22c55e;margin-top:10px}
-</style>
+    header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      height: 0;
+      background: black;
+    }
+
+    iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .modules {
+      padding: 12px;
+    }
+
+    .module {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      background: #1e293b;
+      color: white;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .locked {
+      background: #475569;
+      opacity: 0.7;
+    }
+
+    .payment-box {
+      padding: 16px;
+      background: #111827;
+      margin: 12px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+
+    .payment-box p {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      background: orange;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ok {
+      color: #22c55e;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .bad {
+      color: #ef4444;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    .info {
+      color: #facc15;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-<button onclick="history.back()">←</button>
-<h3>Formation AliScan</h3>
-</header>
+  <header>
+    <button onclick="history.back()">←</button>
+    <h3>Formation AliScan</h3>
+  </header>
 
-<!-- PLAYER -->
-<div class="video-container">
-<iframe id="player"
-src="https://www.youtube.com/embed/Gx0c_lfH8L0"
-allowfullscreen></iframe>
-</div>
+  <!-- LECTEUR -->
+  <div class="video-container">
+    <iframe
+      id="player"
+      src="https://www.youtube.com/embed/Gx0c_lfH8L0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
 
-<!-- MODULES -->
-<div class="modules">
+  <!-- MODULES -->
+  <div class="modules">
+    <button class="module" onclick="play('Gx0c_lfH8L0')">
+      🎁 Module 1 (GRATUIT)
+    </button>
 
-<button class="module" onclick="play('Gx0c_lfH8L0')">
-🎁 Module 1 (GRATUIT)
-</button>
+    <button class="module locked" onclick="checkAccess('jnrTRxrdHoE')">
+      🔒 Module 2A
+    </button>
 
-<button class="module locked" onclick="checkAccess('jnrTRxrdHoE')">
-🔒 Module 2A
-</button>
+    <button class="module locked" onclick="checkAccess('HO69rrkH2k4')">
+      🔒 Module 2B
+    </button>
 
-<button class="module locked" onclick="checkAccess('HO69rrkH2k4')">
-🔒 Module 2B
-</button>
+    <button class="module locked" onclick="checkAccess('ycozKvER2YM')">
+      🔒 Module 3
+    </button>
 
-<button class="module locked" onclick="checkAccess('ycozKvER2YM')">
-🔒 Module 3
-</button>
+    <button class="module locked" onclick="checkAccess('lLVx033Gado')">
+      🔒 Module 4
+    </button>
 
-<button class="module locked" onclick="checkAccess('lLVx033Gado')">
-🔒 Module 4
-</button>
+    <button class="module locked" onclick="checkAccess('hyb0itA-3Gc')">
+      🔒 Module 5
+    </button>
+  </div>
 
-<button class="module locked" onclick="checkAccess('hyb0itA-3Gc')">
-🔒 Module 5
-</button>
+  <!-- BLOC PAIEMENT -->
+  <div class="payment-box">
+    <p>💳 <strong>Formation complète : 2000 FCFA</strong></p>
+    <p>📱 <strong>Paiement :</strong> Wave / Orange</p>
+    <p><strong>+2250706273262</strong></p>
 
-</div>
+    <p>
+      Après paiement, tu reçois un <strong>code d’accès</strong>.<br>
+      Ce code active la formation pendant <strong>7 jours</strong>.
+    </p>
 
-<!-- PAIEMENT -->
-<div class="payment">
+    <input type="text" id="accessCode" placeholder="Entre ton code d'accès">
 
-<p>💳 Formation complète : <b>2000 FCFA</b></p>
-<p>📱 Paiement : Wave / Orange</p>
-<p><b>+2250706273262</b></p>
+    <button class="btn" onclick="validateCode()">
+      Activer mon accès
+    </button>
 
-<input type="text" id="waveId" placeholder="Entre ton ID transaction">
+    <div id="msg"></div>
+  </div>
 
-<button class="btn" onclick="sendWhatsApp()">Envoyer mon ID</button>
+  <script>
+    const activeCode = "ALI-2026"; // change ce code quand tu veux
 
-<div id="msg"></div>
+    function play(id) {
+      document.getElementById("player").src =
+        "https://www.youtube.com/embed/" + id + "?autoplay=1";
+    }
 
-</div>
+    function checkAccess(id) {
+      const paid = localStorage.getItem("paid");
+      const expire = localStorage.getItem("expire");
 
-<script>
+      if (paid === "yes" && expire && Date.now() < Number(expire)) {
+        play(id);
+      } else {
+        document.getElementById("msg").innerHTML =
+          "<div class='bad'>🔒 Accès expiré ou non activé</div>";
+        alert("🔒 Accès expiré ou non activé");
+      }
+    }
 
-function play(id){
-document.getElementById("player").src =
-"https://www.youtube.com/embed/"+id+"?autoplay=1";
-}
+    function validateCode() {
+      const input = document.getElementById("accessCode").value.trim();
 
-function checkAccess(id){
-if(localStorage.getItem("paid")){
-play(id);
-}else{
-alert("🔒 Paye d'abord pour accéder à toute la formation");
-}
-}
+      if (!input) {
+        document.getElementById("msg").innerHTML =
+          "<div class='bad'>❌ Entre ton code d'accès</div>";
+        return;
+      }
 
-function sendWhatsApp(){
-let id = document.getElementById("waveId").value;
+      if (input === activeCode) {
+        const expireDate = Date.now() + (7 * 24 * 60 * 60 * 1000);
 
-if(id.length < 6){
-alert("ID invalide");
-return;
-}
+        localStorage.setItem("paid", "yes");
+        localStorage.setItem("expire", expireDate);
 
-let message =
-"Bonjour, j’ai payé la formation Alibaba.%0AID : "+id;
+        document.getElementById("msg").innerHTML =
+          "<div class='ok'>✅ Accès activé pour 7 jours</div>";
+      } else {
+        document.getElementById("msg").innerHTML =
+          "<div class='bad'>❌ Code incorrect</div>";
+      }
+    }
 
-window.open(
-"https://wa.me/2250706273262?text="+message,
-"_blank"
-);
+    (function checkExistingAccess() {
+      const paid = localStorage.getItem("paid");
+      const expire = localStorage.getItem("expire");
 
-document.getElementById("msg").innerHTML =
-"<div class='ok'>✅ ID envoyé. Attends validation.</div>";
-}
-
-</script>
+      if (paid === "yes" && expire && Date.now() < Number(expire)) {
+        const daysLeft = Math.ceil((Number(expire) - Date.now()) / (24 * 60 * 60 * 1000));
+        document.getElementById("msg").innerHTML =
+          "<div class='info'>✅ Accès déjà actif — " + daysLeft + " jour(s) restant(s)</div>";
+      }
+    })();
+  </script>
 
 </body>
 </html>
