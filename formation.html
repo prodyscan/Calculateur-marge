@@ -3,181 +3,259 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formation AliScan</title>
-
+  <title>Formation Alibaba</title>
   <style>
     body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff7ed;
+      color: #111827;
       margin: 0;
     }
 
-    header {
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      background: #1e293b;
+    .wrap {
+      width: min(920px, calc(100% - 24px));
+      margin: 16px auto 40px;
     }
 
-    header button {
-      margin-right: 10px;
-      background: none;
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .back-btn {
       border: none;
-      color: white;
-      font-size: 20px;
+      background: #ffedd5;
+      color: #9a3412;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #fed7aa;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.08);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: #6b7280;
     }
 
     .video-container {
       position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
+      width: 100%;
+      padding-top: 56.25%;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
     }
 
-    iframe {
+    .video-container iframe {
       position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
+      border: none;
+    }
+
+    .module-title {
+      margin-top: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #9a3412;
     }
 
     .modules {
-      padding: 10px;
+      display: grid;
+      gap: 10px;
     }
 
-    .module {
-      display: block;
+    .module-btn {
       width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-      border: none;
-      background: #1e293b;
-      color: white;
-      border-radius: 8px;
+      border: 1px solid #fed7aa;
+      background: white;
+      color: #111827;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: left;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    .locked {
-      background: #444;
+    .module-btn.locked {
       opacity: 0.6;
     }
 
-    .payment-box {
-      padding: 15px;
-      background: #111827;
-      margin: 10px;
-      border-radius: 10px;
+    .pay-box {
+      background: #fffaf5;
+      border: 1px solid #fed7aa;
+      border-radius: 16px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .pay-box p {
+      margin: 6px 0;
     }
 
     input {
       width: 100%;
-      padding: 10px;
+      min-height: 54px;
+      border: 2px solid #fdba74;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font: inherit;
+      box-sizing: border-box;
       margin-top: 10px;
-      border-radius: 5px;
-      border: none;
     }
 
     .btn {
       width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      background: orange;
+      min-height: 52px;
       border: none;
-      border-radius: 5px;
+      border-radius: 14px;
+      background: #f97316;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      font: inherit;
+    }
+
+    .note {
+      margin-top: 12px;
+      color: #9a3412;
+      font-weight: 700;
+      line-height: 1.5;
     }
 
     .ok {
-      color: #22c55e;
       margin-top: 10px;
+      color: #166534;
+      font-weight: 700;
     }
   </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <button class="back-btn" onclick="history.back()">←</button>
+      <div>
+        <h1>Formation Alibaba</h1>
+        <p class="subtitle">Module 1 gratuit. Accès complet après paiement et vérification.</p>
+      </div>
+    </div>
 
-<header>
-  <button onclick="history.back()">←</button>
-  <h3>Formation AliScan</h3>
-</header>
+    <div class="card">
+      <div class="video-container">
+        <iframe
+          id="player"
+          src="https://www.youtube.com/embed/VIDEO_ID_1?rel=0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
 
-<!-- PLAYER -->
-<div class="video-container">
-  <iframe id="player"
-    src="https://www.youtube.com/embed/VIDEO_ID_PREVIEW"
-    allowfullscreen>
-  </iframe>
-</div>
+      <div id="moduleTitle" class="module-title">Module 1 gratuit</div>
+    </div>
 
-<!-- MODULES -->
-<div class="modules">
+    <div class="card">
+      <div class="modules">
+        <button class="module-btn" onclick="playVideo('VIDEO_ID_1', 'Module 1 gratuit')">
+          🎁 Module 1 gratuit
+        </button>
 
-  <button class="module" onclick="play('VIDEO_ID_PREVIEW')">
-    🎁 Preview gratuit
-  </button>
+        <button class="module-btn locked" onclick="lockedMessage()">
+          🔒 Module 2
+        </button>
 
-  <button class="module locked" onclick="checkAccess('VIDEO_ID_1')">
-    🔒 Module 1
-  </button>
+        <button class="module-btn locked" onclick="lockedMessage()">
+          🔒 Module 3
+        </button>
 
-  <button class="module locked" onclick="checkAccess('VIDEO_ID_2')">
-    🔒 Module 2
-  </button>
+        <button class="module-btn locked" onclick="lockedMessage()">
+          🔒 Module 4
+        </button>
+      </div>
+    </div>
 
-  <button class="module locked" onclick="checkAccess('VIDEO_ID_3')">
-    🔒 Module 3
-  </button>
+    <div class="card">
+      <h2>Débloquer la formation complète</h2>
 
-  <button class="module locked" onclick="checkAccess('VIDEO_ID_4')">
-    🔒 Module 4
-  </button>
+      <div class="pay-box">
+        <p><strong>Prix :</strong> 2000 FCFA</p>
+        <p><strong>Paiement :</strong> Wave / Orange</p>
+        <p><strong>Numéro :</strong> +2250706273262</p>
+      </div>
 
-</div>
+      <input
+        type="text"
+        id="waveId"
+        placeholder="Entrez votre ID de transaction"
+      />
 
-<!-- PAIEMENT -->
-<div class="payment-box">
+      <button class="btn" onclick="sendIdWhatsApp()">
+        Envoyer mon ID sur WhatsApp
+      </button>
 
-  <p>💳 Paiement: <b>2000 FCFA</b></p>
-  <p>📱 Wave / Orange:</p>
+      <p class="note">
+        Après paiement, entrez votre ID puis envoyez-le sur WhatsApp.<br>
+        Votre accès sera activé après vérification manuelle.
+      </p>
 
-  <p><b>+2250706273262</b></p>
+      <div id="msg"></div>
+    </div>
+  </div>
 
-  <input type="text" id="waveId" placeholder="Entre ton ID transaction">
-
-  <button class="btn" onclick="validate()">Valider paiement</button>
-
-  <div id="msg"></div>
-
-</div>
-
-<script>
-  let unlocked = localStorage.getItem("paid");
-
-  function play(id){
-    document.getElementById("player").src =
-      "https://www.youtube.com/embed/" + id + "?autoplay=1";
-  }
-
-  function checkAccess(id){
-    if(localStorage.getItem("paid")){
-      play(id);
-    } else {
-      alert("🔒 Paye d'abord pour accéder à la formation");
+  <script>
+    function playVideo(videoId, title) {
+      document.getElementById("player").src =
+        "https://www.youtube.com/embed/" + videoId + "?autoplay=1&rel=0";
+      document.getElementById("moduleTitle").textContent = title;
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
 
-  function validate(){
-    let id = document.getElementById("waveId").value;
-
-    if(id.length < 6){
-      alert("ID invalide");
-      return;
+    function lockedMessage() {
+      alert("🔒 Module bloqué. Payez d'abord pour accéder à la formation complète.");
     }
 
-    // TOI tu vérifies manuellement après
-    localStorage.setItem("paid", "yes");
+    function sendIdWhatsApp() {
+      const id = document.getElementById("waveId").value.trim();
 
-    document.getElementById("msg").innerHTML =
-      "<div class='ok'>✅ Accès débloqué</div>";
-  }
-</script>
+      if (!id) {
+        alert("Veuillez entrer votre ID de transaction.");
+        return;
+      }
 
+      if (id.length < 6) {
+        alert("ID invalide.");
+        return;
+      }
+
+      const message =
+        "Bonjour, j’ai payé la formation Alibaba.%0A" +
+        "Mon ID de transaction est : " + encodeURIComponent(id);
+
+      window.open(
+        "https://wa.me/2250706273262?text=" + message,
+        "_blank"
+      );
+
+      document.getElementById("msg").innerHTML =
+        "<div class='ok'>✅ ID prêt à être envoyé sur WhatsApp. Votre accès sera activé après vérification.</div>";
+    }
+  </script>
 </body>
 </html>
