@@ -331,4 +331,38 @@ select:focus {
   justify-content: flex-end;
   margin-bottom: 10px;
 }
+
+.top-action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.testimonials {
+  display: grid;
+  gap: 14px;
+}
+
+.testimonial {
+  background: #fffaf5;
+  border: 1px solid #fed7aa;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.testimonial p {
+  margin: 6px 0;
+}
+
+.testimonial span {
+  font-size: 13px;
+  color: #7c2d12;
+  font-weight: 600;
+}
+
+.stars {
+  color: #f97316;
+  font-weight: bold;
+}
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>importcacultor</title>
 
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#f97316" />
 
@@ -20,13 +20,56 @@
 <body>
   <main class="container">
 
-    <div class="top-action">
-      <button onclick="window.location.href='formation.html'" class="btn primary">
+    <div class="top-action" style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:10px;">
+      <button type="button" onclick="toggleConverterPanel(true)" class="btn ghost">
+        💱 Convertisseur
+      </button>
+
+      <button type="button" onclick="window.location.href='formation.html'" class="btn primary">
         📚 Formation Alibaba
       </button>
     </div>
 
-    <section class="card">
+    <!-- Panneau convertisseur -->
+    <section class="card hidden" id="converterPanel">
+      <div class="result-head">
+        <h2>💱 Convertisseur rapide</h2>
+        <button type="button" class="btn small" onclick="toggleConverterPanel(false)">Retour</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label for="convertAmount">Montant à convertir</label>
+          <input id="convertAmount" type="number" min="0" step="0.01" placeholder="Ex: 5.3" />
+        </div>
+
+        <div class="field">
+          <label for="convertCurrency">Devise</label>
+          <select id="convertCurrency">
+            <option value="usd">USD - Dollar US</option>
+            <option value="eur">EUR - Euro</option>
+            <option value="gbp">GBP - Livre sterling</option>
+            <option value="cny">CNY - Yuan</option>
+            <option value="ghs">GHS - Cedi</option>
+            <option value="ngn">NGN - Naira</option>
+            <option value="xaf">XAF - FCFA CEMAC</option>
+            <option value="xof">XOF - FCFA UEMOA</option>
+          </select>
+        </div>
+
+        <div class="full-width">
+          <button type="button" class="btn primary" onclick="openGoogleConverter()">
+            Ouvrir dans Google
+          </button>
+        </div>
+      </div>
+
+      <p class="status-message" style="margin-top:12px;">
+        Ce bouton ouvre Google avec la conversion prête. Ensuite tu peux revenir au calculateur avec le bouton Retour.
+      </p>
+    </section>
+
+    <section class="card" id="calculatorCard">
       <div class="title-wrap">
         <h1>importcacultor</h1>
         <p class="subtitle">Calculateur intelligent de coût, marge, gain et perte pour importation.</p>
@@ -50,17 +93,23 @@
 
         <div class="field">
           <label for="currency">Devise fournisseur</label>
-          <select id="currency">
-            <option value="USD">USD - Dollar US</option>
-            <option value="FCFA">FCFA</option>
-            <option value="EUR">EUR - Euro</option>
-            <option value="GBP">GBP - Livre sterling</option>
-            <option value="CNY">CNY - Yuan</option>
-            <option value="GHS">GHS - Cedi</option>
-            <option value="NGN">NGN - Naira</option>
-            <option value="XAF">XAF - FCFA CEMAC</option>
-            <option value="XOF">XOF - FCFA UEMOA</option>
-          </select>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <select id="currency" style="flex:1;">
+              <option value="USD">USD - Dollar US</option>
+              <option value="FCFA">FCFA</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - Livre sterling</option>
+              <option value="CNY">CNY - Yuan</option>
+              <option value="GHS">GHS - Cedi</option>
+              <option value="NGN">NGN - Naira</option>
+              <option value="XAF">XAF - FCFA CEMAC</option>
+              <option value="XOF">XOF - FCFA UEMOA</option>
+            </select>
+
+            <button type="button" class="btn small" onclick="toggleConverterPanel(true)">
+              💱
+            </button>
+          </div>
         </div>
 
         <div class="field">
@@ -69,13 +118,14 @@
         </div>
 
         <div class="field">
-          <label for="supplierDelivery">Livraison chez le transitaire</label>
-          <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
-        </div>
-
-        <div class="field hidden-by-advanced" id="quantityField">
           <label for="quantity">Quantité</label>
           <input id="quantity" type="number" min="1" step="1" value="1" />
+          <small>Laisse 1 si tu as déjà le montant total</small>
+        </div>
+
+        <div class="field">
+          <label for="supplierDelivery">Livraison chez le transitaire</label>
+          <input id="supplierDelivery" type="number" min="0" step="0.01" value="0" />
         </div>
 
         <div class="field hidden-by-advanced" id="exchangeRateField">
@@ -175,10 +225,10 @@
             <div class="option-box">
               <label class="check-card">
                 <input type="checkbox" id="chkSellingPrice" />
-                <span>Prix de vente envisagé</span>
+                <span>Prix de vente envisagé (1 pc)</span>
               </label>
               <div class="field hidden inline-field" id="sellingPriceWrap">
-                <label for="sellingPrice">Prix de vente envisagé</label>
+                <label for="sellingPrice">Prix de vente envisagé (1 pc)</label>
                 <input id="sellingPrice" type="number" min="0" step="0.01" value="0" />
               </div>
             </div>
@@ -243,27 +293,27 @@
         </div>
 
         <div class="result-row" id="rowUnitCost">
-          <span>Coût unitaire</span>
+          <span>Coût unitaire (1 pc)</span>
           <strong id="rUnitCost">-</strong>
         </div>
 
         <div class="result-row hidden" id="rowSellingPrice" style="display:none;">
-          <span>Prix de vente</span>
+          <span>Prix de vente (1 pc)</span>
           <strong id="rSellingPrice">-</strong>
         </div>
 
         <div class="result-row hidden" id="rowProfitTotal" style="display:none;">
-          <span>Bénéfice total</span>
+          <span>Gain total</span>
           <strong id="rProfitTotal">-</strong>
         </div>
 
         <div class="result-row hidden" id="rowProfitUnit" style="display:none;">
-          <span>Bénéfice unitaire</span>
+          <span>Gain (1 pc)</span>
           <strong id="rProfitUnit">-</strong>
         </div>
 
         <div class="result-row hidden" id="rowMargin" style="display:none;">
-          <span>Marge</span>
+          <span>Marge (%)</span>
           <strong id="rMargin">-</strong>
         </div>
       </div>
@@ -288,8 +338,57 @@
         <p class="muted">Aucun calcul enregistré.</p>
       </div>
     </section>
+
+    <section class="card">
+      <div class="result-head">
+        <h2>💬 Témoignages</h2>
+      </div>
+
+      <div class="testimonials">
+        <div class="testimonial">
+          <p class="stars">★★★★★</p>
+          <p>“J’ai recalculé un produit et j’étais en perte sans le savoir. Cet outil m’a sauvé.”</p>
+          <span>— Koffi, Abidjan</span>
+        </div>
+
+        <div class="testimonial">
+          <p class="stars">★★★★★</p>
+          <p>“Très simple à utiliser. Maintenant je calcule toujours avant d’importer.”</p>
+          <span>— Awa, Dakar</span>
+        </div>
+
+        <div class="testimonial">
+          <p class="stars">★★★★★</p>
+          <p>“Franchement utile pour éviter les erreurs. Je recommande.”</p>
+          <span>— Serge, Lomé</span>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js?v=4"></script>
+
+  <script>
+    function toggleConverterPanel(show) {
+      const panel = document.getElementById("converterPanel");
+      const calc = document.getElementById("calculatorCard");
+
+      if (show) {
+        panel.classList.remove("hidden");
+        calc.scrollIntoView({ behavior: "smooth" });
+        panel.scrollIntoView({ behavior: "smooth" });
+      } else {
+        panel.classList.add("hidden");
+        calc.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+
+    function openGoogleConverter() {
+      const amount = document.getElementById("convertAmount").value || 1;
+      const currency = document.getElementById("convertCurrency").value || "usd";
+      const query = `${amount} ${currency} en fcfa`;
+      window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank");
+    }
+  </script>
 </body>
 </html>

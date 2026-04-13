@@ -13,7 +13,8 @@ const fixedTransportWrap = $("fixedTransportWrap");
 const weightWrap = $("weightWrap");
 const cbmWrap = $("cbmWrap");
 
-const advancedFixedFields = ["quantityField", "exchangeRateField"];
+// quantité n'est plus cachée
+const advancedFixedFields = ["exchangeRateField"];
 
 const optionalMap = [
   { check: "chkTaxes", wrap: "taxPercentWrap" },
@@ -157,10 +158,11 @@ function compute() {
   const supplierAmount = num("supplierAmount");
   const supplierDelivery = num("supplierDelivery");
 
-  const quantityVisible = !$("quantityField").classList.contains("hidden");
-  const exchangeVisible = !$("exchangeRateField").classList.contains("hidden");
+  // quantité toujours visible
+  const quantity = Math.max(1, num("quantity") || 1);
 
-  const quantity = quantityVisible ? Math.max(1, num("quantity")) : 1;
+  // taux visible seulement en avancé
+  const exchangeVisible = !$("exchangeRateField").classList.contains("hidden");
   const exchangeRate = exchangeVisible ? (Math.max(0, num("exchangeRate")) || 1) : 1;
 
   const hasTaxes = $("chkTaxes").checked;
@@ -173,7 +175,7 @@ function compute() {
   const packaging = hasPackaging ? num("packaging") : 0;
   const otherFees = hasOtherFees ? num("otherFees") : 0;
   const localDelivery = hasLocalDelivery ? num("localDelivery") : 0;
-  const sellingPrice = hasSellingPrice ? num("sellingPrice") : 0;
+  const sellingPrice = hasSellingPrice ? num("sellingPrice") : 0; // prix de vente 1 pc
 
   const supplierFcfa = supplierAmount * exchangeRate;
 
@@ -203,7 +205,9 @@ function compute() {
     otherFees +
     localDelivery;
 
-  const unitCost = totalCost / quantity;
+  const unitCost = quantity > 0 ? totalCost / quantity : totalCost;
+
+  // prix de vente = 1 pc, donc revenu total = prix unitaire * quantité
   const revenueTotal = sellingPrice * quantity;
   const profitTotal = revenueTotal - totalCost;
   const profitUnit = sellingPrice - unitCost;
@@ -217,11 +221,11 @@ function compute() {
     if (profitTotal > 0) {
       status = "gain";
       badgeText = "Gain";
-      message = `Gain avec une marge de ${marginPercent.toFixed(1)}%`;
+      message = `Gain de ${money(profitTotal)} avec une marge de ${marginPercent.toFixed(1)}%`;
     } else if (profitTotal < 0) {
       status = "loss";
       badgeText = "Perte";
-      message = `Perte avec une marge de ${marginPercent.toFixed(1)}%`;
+      message = `Perte de ${money(Math.abs(profitTotal))} avec une marge de ${marginPercent.toFixed(1)}%`;
     } else {
       status = "neutral";
       badgeText = "Équilibre";
@@ -249,6 +253,7 @@ function compute() {
     totalCost,
     unitCost,
     sellingPrice,
+    revenueTotal,
     profitTotal,
     profitUnit,
     marginPercent,
@@ -372,9 +377,11 @@ function renderHistory() {
       <p><strong>Nom du fournisseur :</strong> ${item.supplierName ? escapeHtml(item.supplierName) : "Non renseigné"}</p>
       <p><strong>Date :</strong> ${escapeHtml(item.date)}</p>
       <p><strong>Coût total :</strong> ${money(item.totalCost)}</p>
-      <p><strong>Prix de vente :</strong> ${money(item.sellingPrice)}</p>
-      <p><strong>Bénéfice total :</strong> ${money(item.profitTotal)}</p>
-      <p><strong>Marge :</strong> ${item.marginPercent.toFixed(1)}%</p>
+      <p><strong>Coût unitaire (1 pc) :</strong> ${money(item.unitCost)}</p>
+      <p><strong>Prix de vente (1 pc) :</strong> ${money(item.sellingPrice)}</p>
+      <p><strong>Gain total :</strong> ${money(item.profitTotal)}</p>
+      <p><strong>Gain (1 pc) :</strong> ${money(item.profitUnit)}</p>
+      <p><strong>Marge (%) :</strong> ${item.marginPercent.toFixed(1)}%</p>
       <p><strong>Statut :</strong> ${escapeHtml(item.badgeText)}</p>
       <p><strong>Lien du fournisseur :</strong> ${item.supplierLink ? escapeHtml(item.supplierLink) : "Aucun"}</p>
       ${
@@ -420,6 +427,7 @@ function exportCSV() {
     "totalCost",
     "unitCost",
     "sellingPrice",
+    "revenueTotal",
     "profitTotal",
     "profitUnit",
     "marginPercent",
